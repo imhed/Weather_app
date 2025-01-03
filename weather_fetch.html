@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="hed">Weather App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      color: #ffffff;
+      background-image: url(https://img2.wallspic.com/crops/7/0/8/2/22807/22807-atmosphere-rain-water-weather_forecasting-drop-1920x1080.jpg);
+      height: 100vh;
+    }
+
+    header {
+      background: #007bff00;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    #hed{
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+
+    .search-box {
+      display: flex;
+      gap: 10px;
+    }
+
+    input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #0000005d;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #007bfff1;
+      color: white;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #weather-info {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #error-message {
+      color: red;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Weather App</h1>
+  </header>
+  <main>
+    <div class="search-box">
+      <input type="text" id="city-input" placeholder="Enter city name">
+      <button id="search-btn">Search</button>
+    </div>
+    <div id="weather-info" class="hidden">
+      <h2 id="city-name"></h2>
+      <p id="temperature"></p>
+      <p id="description"></p>
+      <p id="humidity"></p>
+      <p id="wind-speed"></p>
+    </div>
+    <p id="error-message" class="hidden"></p>
+  </main>
+  <script>
+    const API_KEY = '3c621533be2188486a8f89411af9fdd4'; // Replace with your OpenWeatherMap API key
+
+    document.getElementById('search-btn').addEventListener('click', () => {
+      const city = document.getElementById('city-input').value.trim();
+      const errorMessage = document.getElementById('error-message');
+      const weatherInfo = document.getElementById('weather-info');
+
+      // Clear previous messages
+      errorMessage.textContent = '';
+      errorMessage.classList.add('hidden');
+      weatherInfo.classList.add('hidden');
+
+      if (!city) {
+        errorMessage.textContent = 'Please enter a city name.';
+        errorMessage.classList.remove('hidden');
+        return;
+      }
+
+      fetchWeather(city);
+    });
+
+    function fetchWeather(city) {
+      const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`;
+      const errorMessage = document.getElementById('error-message');
+      const weatherInfo = document.getElementById('weather-info');
+
+      fetch(apiUrl)
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error('No city available. Please check the spelling and try again.');
+            } else {
+              throw new Error('An error occurred. Please try again later.');
+            }
+          }
+          return response.json();
+        })
+        .then(data => {
+          displayWeather(data);
+        })
+        .catch(error => {
+          errorMessage.textContent = error.message;
+          errorMessage.classList.remove('hidden');
+        });
+    }
+
+    function displayWeather(data) {
+      const cityName = data.name;
+      const temp = data.main.temp;
+      const desc = data.weather[0].description;
+      const humidity = data.main.humidity;
+      const windSpeed = data.wind.speed;
+
+      document.getElementById('city-name').textContent = `Weather in ${cityName}`;
+      document.getElementById('temperature').textContent = `Temperature: ${temp}°C`;
+      document.getElementById('description').textContent = `Condition: ${desc}`;
+      document.getElementById('humidity').textContent = `Humidity: ${humidity}%`;
+      document.getElementById('wind-speed').textContent = `Wind Speed: ${windSpeed} m/s`;
+
+      document.getElementById('weather-info').classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>
