@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="hed">Weather App</title>
+  <title>Weather App</title>
   <style>
     body {
       margin: 0;
@@ -12,28 +12,32 @@
       color: #ffffff;
       background-image: url(https://img2.wallspic.com/crops/7/0/8/2/22807/22807-atmosphere-rain-water-weather_forecasting-drop-1920x1080.jpg);
       height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.258);
+      padding: 30px;
+      border-radius: 15px;
+      width: 50%;
+      max-width: 600px;
+      text-align: center;
+      height: 80%;
+      box-shadow: 10px 10px 10px 10px black;
     }
 
     header {
       background: #007bff00;
       color: white;
       padding: 20px;
-      text-align: center;
-    }
-
-    main {
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    #hed{
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     }
 
     .search-box {
       display: flex;
       gap: 10px;
+      margin-top: 20px;
     }
 
     input {
@@ -68,29 +72,31 @@
     #error-message {
       color: red;
       margin-top: 20px;
-      text-align: center;
       font-size: 16px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Weather App</h1>
-  </header>
-  <main>
-    <div class="search-box">
-      <input type="text" id="city-input" placeholder="Enter city name">
-      <button id="search-btn">Search</button>
-    </div>
-    <div id="weather-info" class="hidden">
-      <h2 id="city-name"></h2>
-      <p id="temperature"></p>
-      <p id="description"></p>
-      <p id="humidity"></p>
-      <p id="wind-speed"></p>
-    </div>
-    <p id="error-message" class="hidden"></p>
-  </main>
+  <div class="container">
+    <header>
+      <h1>Weather App</h1>
+    </header>
+    <main>
+      <div class="search-box">
+        <input type="text" id="city-input" placeholder="Enter city name">
+        <button id="search-btn">Search</button>
+      </div>
+      <div id="weather-info" class="hidden">
+        <h2 id="city-name"></h2>
+        <p id="temperature"></p>
+        <p id="description"></p>
+        <p id="humidity"></p>
+        <p id="wind-speed"></p>
+      </div>
+      <p id="error-message" class="hidden"></p>
+    </main>
+  </div>
+
   <script>
     const API_KEY = '3c621533be2188486a8f89411af9fdd4'; // Replace with your OpenWeatherMap API key
 
